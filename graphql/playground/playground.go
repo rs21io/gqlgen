@@ -32,7 +32,7 @@ var page = template.Must(template.New("graphiql").Parse(`<!DOCTYPE html>
 		const wsProto = location.protocol == 'https:' ? 'wss:' : 'ws:'
 		GraphQLPlayground.init(root, {
 			endpoint: location.protocol + '//' + location.host + '{{.endpoint}}',
-			subscriptionsEndpoint: wsProto + '//' + location.host + '{{.endpoint }}',
+			subscriptionsEndpoint: wsProto + '//' + location.host + '{{.subscriptionEndpoint }}',
            shareEnabled: true,
 			settings: {
 				'request.credentials': 'same-origin'
@@ -44,16 +44,17 @@ var page = template.Must(template.New("graphiql").Parse(`<!DOCTYPE html>
 </html>
 `))
 
-func Handler(title string, endpoint string) http.HandlerFunc {
+func Handler(title, endpoint, subscriptionEndpoint string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "text/html")
 		err := page.Execute(w, map[string]string{
-			"title":      title,
-			"endpoint":   endpoint,
-			"version":    "1.7.20",
-			"cssSRI":     "sha256-cS9Vc2OBt9eUf4sykRWukeFYaInL29+myBmFDSa7F/U=",
-			"faviconSRI": "sha256-GhTyE+McTU79R4+pRO6ih+4TfsTOrpPwD8ReKFzb3PM=",
-			"jsSRI":      "sha256-4QG1Uza2GgGdlBL3RCBCGtGeZB6bDbsw8OltCMGeJsA=",
+			"title":                title,
+			"endpoint":             endpoint,
+			"subscriptionEndpoint": subscriptionEndpoint,
+			"version":              "1.7.26",
+			"cssSRI":               "sha256-cS9Vc2OBt9eUf4sykRWukeFYaInL29+myBmFDSa7F/U=",
+			"faviconSRI":           "sha256-GhTyE+McTU79R4+pRO6ih+4TfsTOrpPwD8ReKFzb3PM=",
+			"jsSRI":                "sha256-4QG1Uza2GgGdlBL3RCBCGtGeZB6bDbsw8OltCMGeJsA=",
 		})
 		if err != nil {
 			panic(err)
