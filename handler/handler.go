@@ -239,8 +239,8 @@ type PersistedQueryCache interface {
 }
 
 // Deprecated: use playground.Handler instead
-func Playground(title string, endpoint string) http.HandlerFunc {
-	return playground.Handler(title, endpoint)
+func Playground(title, endpoint, subscriptionEndpoint string) http.HandlerFunc {
+	return playground.Handler(title, endpoint, subscriptionEndpoint)
 }
 
 // Deprecated: use transport.InitPayload instead
